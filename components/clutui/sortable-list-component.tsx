@@ -162,7 +162,7 @@ function SortableListDemo() {
               </label>
               <textarea
                 id="prompt"
-                className="h-[100px] w-full resize-none rounded-[6px]  bg-neutral-800 px-2 py-[2px] text-sm text-white placeholder:text-white/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#13EEE3]/80"
+                className="h-[100px] w-full resize-none rounded-[6px]  bg-neutral-800 px-1 py-[2px] text-sm text-white placeholder:text-white/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#13EEE3]/80"
                 value={item.description}
                 placeholder="update agent prompt"
                 onChange={(e) => {
@@ -206,7 +206,7 @@ function SortableListDemo() {
                     Top P
                   </label>
                   <div className="flex w-1/2 items-center gap-3">
-                    <span className="w-12 rounded-md  bg-black/20 px-2 py-0.5 text-right text-sm text-muted-foreground">
+                    <span className="w-12 rounded-md  bg-black/20 px-1 py-0.5 text-right text-sm text-muted-foreground">
                       {topP}
                     </span>
                     <Slider
@@ -227,7 +227,7 @@ function SortableListDemo() {
                     Temperature
                   </label>
                   <div className="flex w-1/2 items-center gap-3">
-                    <span className="w-12 rounded-md  bg-black/20 px-2 py-0.5 text-right text-sm text-muted-foreground">
+                    <span className="w-12 rounded-md  bg-black/20 px-1 py-0.5 text-right text-sm text-muted-foreground">
                       {temp}
                     </span>
                     <Slider
@@ -248,7 +248,7 @@ function SortableListDemo() {
                     Max Tokens
                   </label>
                   <div className="flex w-1/2 items-center gap-3">
-                    <span className="w-12 rounded-md  bg-black/20 px-2 py-0.5 text-right text-sm text-muted-foreground">
+                    <span className="w-12 rounded-md  bg-black/20 px-1 py-0.5 text-right text-sm text-muted-foreground">
                       {tokens}
                     </span>
                     <Slider
