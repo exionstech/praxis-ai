@@ -236,7 +236,7 @@ const AddNewInterview = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-black">
-                              Company
+                              Company you want to join
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
