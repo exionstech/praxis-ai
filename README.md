@@ -37,9 +37,9 @@ Praxis is a cutting-edge AI-driven platform designed to simulate real interview 
 - *Next.js*
 - *TypeScript*
 - *Tailwind CSS*
-- *Drizzle*
-- *Postgres*
-- *ShadCN*
+- *Drizzle Orm*
+- *Neon DB*
+- *Shadcn UI*
 
 ## 🔋 Features
 
@@ -72,7 +72,7 @@ cd status_code_one
 
 Create a new file named .env.local in the root of your project and add the following content:
 ```
-env
+
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
