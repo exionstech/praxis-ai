@@ -9,10 +9,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { VoiceLoader } from "./voice-loader";
 import { VoiceLoaderForQuestion } from "./voice-loader-question";
-import { feedbackPromptFormat } from "@/utils/feedback-prompt";
+import { feedbackPromptFormat, mcqPromptFormat } from "@/utils/feedback-prompt";
 import { chatSession } from "@/utils/gemini-ai";
 import { db } from "@/utils/db";
-import { UserAnswer } from "@/utils/schema";
+import { McqDetails, MockInterview, UserAnswer } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
 import moment from "moment";
 import { RefreshButton } from "./refresh-answer-button";
@@ -35,6 +35,7 @@ export const QuestionsSection = ({
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [finalanswer, setFinalAnswer] = useState<string>("");
+  const [mcq, setMcq] = useState<any>([]);
 
   const {
     error,
@@ -101,55 +102,58 @@ export const QuestionsSection = ({
       question: mockInterviewQuestion[activeQuestionIndex]?.question,
       userAnswer: finalanswer,
     });
-    
+
+    const mcqPrompt = mcqPromptFormat({
+      question: mockInterviewQuestion[activeQuestionIndex]?.question,
+      userAnswer: finalanswer,
+    });
+
     try {
       const result = await chatSession.sendMessage(feedbackPrompt);
       const mockJsonResponse = result.response
         .text()
         .replace("```json", "")
         .replace("```", "");
-      // const jsonFeedbackResponse = JSON.parse(mockJsonResponse);
-      console.log(result.response.text());
-      console.log(mockJsonResponse);
+      const jsonFeedbackResponse = JSON.parse(mockJsonResponse);
+      console.log(jsonFeedbackResponse);
 
-      // if (interviewData?.mockId && user?.primaryEmailAddress?.emailAddress) {
-      //   const resp = await db.insert(UserAnswer).values({
-      //     mockIdref: interviewData.mockId,
-      //     question: mockInterviewQuestion[activeQuestionIndex]?.question,
-      //     correctAnswer: mockInterviewQuestion[activeQuestionIndex]?.answer,
-      //     userAnswer: userAnswer,
-      //     feedback: jsonFeedbackResponse?.feedback,
-      //     rating: jsonFeedbackResponse?.rating,
-      //     userEmail: user.primaryEmailAddress.emailAddress,
-      //     mcqs: jsonFeedbackResponse?.mcqs,
-      //     createdAt: moment().format("YYYY-MM-DD"),
-      //   });
-        
-      //   if (resp) {
-      //     toast("Answer recorded successfully", {
-      //       action: {
-      //         label: "Okay",
-      //         onClick: () => toast.dismiss(),
-      //       },
-      //     });
-      //     setResults([]);
-      //     clearUserData();
-      //   } else {
-      //     toast("Something went wrong while saving", {
-      //       action: {
-      //         label: "Okay",
-      //         onClick: () => toast.dismiss(),
-      //       },
-      //     });
-      //   }
-      // } else {
-      //   toast("Error while fetching user data", {
-      //     action: {
-      //       label: "Okay",
-      //       onClick: () => toast.dismiss(),
-      //     },
-      //   });
-      // }
+      if (interviewData?.mockId && user?.primaryEmailAddress?.emailAddress) {
+        const resp = await db.insert(UserAnswer).values({
+          mockIdref: interviewData.mockId,
+          question: mockInterviewQuestion[activeQuestionIndex]?.question,
+          correctAnswer: mockInterviewQuestion[activeQuestionIndex]?.answer,
+          userAnswer: userAnswer,
+          feedback: jsonFeedbackResponse?.feedback,
+          rating: jsonFeedbackResponse?.rating,
+          userEmail: user.primaryEmailAddress.emailAddress,
+          createdAt: moment().format("YYYY-MM-DD"),
+        });
+
+        if (resp) {
+          toast("Answer recorded successfully", {
+            action: {
+              label: "Okay",
+              onClick: () => toast.dismiss(),
+            },
+          });
+          setResults([]);
+          clearUserData();
+        } else {
+          toast("Something went wrong while saving", {
+            action: {
+              label: "Okay",
+              onClick: () => toast.dismiss(),
+            },
+          });
+        }
+      } else {
+        toast("Error while fetching user data", {
+          action: {
+            label: "Okay",
+            onClick: () => toast.dismiss(),
+          },
+        });
+      }
     } catch (error) {
       toast("Something went wrong while saving", {
         action: {
@@ -157,8 +161,78 @@ export const QuestionsSection = ({
           onClick: () => toast.dismiss(),
         },
       });
+      console.log(error);
     }
     setResults([]);
+    setLoading(false);
+  };
+
+  const getMcqQuestions = async () => {
+    setLoading(true);
+
+    const mcqPrompt = mcqPromptFormat({
+      question: mockInterviewQuestion[activeQuestionIndex]?.question,
+      userAnswer: finalanswer,
+    });
+
+    try {
+      const result = await chatSession.sendMessage(mcqPrompt);
+
+      // Ensure the result is correctly parsed into JSON format
+      const responseText = result.response.text();
+
+      // Clean up the response text to make sure it's valid JSON
+      const mockJsonResponse = responseText
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+      // Parse the cleaned-up response into JSON
+      const jsonFeedbackResponse = JSON.parse(mockJsonResponse);
+      console.log(jsonFeedbackResponse?.mcqs);
+
+      if (interviewData?.mockId && user?.primaryEmailAddress?.emailAddress) {
+        const resp = await db.insert(McqDetails).values({
+          mockIdref: interviewData.mockId,
+          mcqs: JSON.stringify(jsonFeedbackResponse?.mcqs), // Save MCQs as a JSON string
+          createdAt: moment().format("YYYY-MM-DD"),
+        });
+
+        if (resp) {
+          toast("MCQ recorded successfully", {
+            action: {
+              label: "Okay",
+              onClick: () => toast.dismiss(),
+            },
+          });
+          setResults([]);
+          clearUserData();
+        } else {
+          toast("Something went wrong while saving", {
+            action: {
+              label: "Okay",
+              onClick: () => toast.dismiss(),
+            },
+          });
+        }
+      } else {
+        toast("Error while fetching user data", {
+          action: {
+            label: "Okay",
+            onClick: () => toast.dismiss(),
+          },
+        });
+      }
+    } catch (err) {
+      toast("Something went wrong while saving", {
+        action: {
+          label: "Okay",
+          onClick: () => toast.dismiss(),
+        },
+      });
+      console.log(err);
+    }
+
     setLoading(false);
   };
 
@@ -250,6 +324,9 @@ export const QuestionsSection = ({
             loadingText="submitting"
             onClick={() => {
               storeAnswerToDb();
+              if (mockInterviewQuestion.length === activeQuestionIndex + 1) {
+                getMcqQuestions();
+              }
             }}
             disabled={loading}
           >
