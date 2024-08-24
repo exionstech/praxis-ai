@@ -3,10 +3,14 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/utils/db";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { MockInterview } from "@/utils/schema";
+import { eq } from "drizzle-orm";
+import { toast } from "sonner"; // Import the toast library
 
 export const InterviewItemCard = ({ interview }: { interview: any }) => {
   const [loading, setLoading] = useState(false);
   const [startLoading, setStartLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const router = useRouter();
 
@@ -26,14 +30,30 @@ export const InterviewItemCard = ({ interview }: { interview: any }) => {
     }, 1400);
   };
 
-  // const handleDeleteInterview = ({ id }: { id: any }) => {
-  //   db.delete(id);
-  // };
-  
+  const handleDeleteInterview = async () => {
+    setDeleteLoading(true);
+    try {
+      await db
+        .delete(MockInterview)
+        .where(eq(MockInterview.mockId, interview.mockId));
+
+      toast.success("Interview deleted successfully");
+      window.location.reload();
+      setDeleteLoading(false);
+    } catch (error) {
+      console.error("Error deleting interview:", error);
+      toast.error("Failed to delete interview");
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   return (
-    <div className="border border-gray-400 shadow-sm rounded-lg p-3 flex flex-col gap-2">
+    <div className="border border-gray-400 shadow-sm rounded-lg p-3 flex flex-col gap-2 col-span-2">
       <div>
-        <h2 className="font-bold text-primary">{interview?.jobPosition}</h2>
+        <h2 className="font-bold text-primary text-lg capitalize">
+          {interview?.jobPosition}
+        </h2>
         <h2 className="text-sm text-gray-600">
           {interview?.jobExperience} Years of Experience
         </h2>
@@ -53,14 +73,9 @@ export const InterviewItemCard = ({ interview }: { interview: any }) => {
         >
           Feedback
         </Button>
-        {/* <Button
-          size="sm"
-          onClick={() => handleDeleteInterview(interview?.id)}
-          isLoading={loading}
-          loadingText="Loading"
-        >
+        <Button size="sm" onClick={handleDeleteInterview}>
           Delete
-        </Button> */}
+        </Button>
         <Button
           size="sm"
           isLoading={startLoading}
