@@ -83,7 +83,7 @@ const AddNewInterview = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     const InputPrompt = InputPromptsFormat(values);
-  
+
     try {
       const result = await chatSession.sendMessage(InputPrompt);
       let MockJsonResponse = result.response
@@ -91,9 +91,11 @@ const AddNewInterview = () => {
         .replace("```json", "")
         .replace("```", "")
         .trim();
-  
+        
+      console.log(result);
+
       console.log("MockJsonResponse", MockJsonResponse);
-  
+
       let parsedResponse;
       try {
         parsedResponse = JSON.parse(MockJsonResponse);
@@ -103,9 +105,9 @@ const AddNewInterview = () => {
         setLoading(false);
         return;
       }
-  
+
       setJsonResponse(parsedResponse);
-  
+
       if (parsedResponse) {
         try {
           const response = await db
@@ -121,7 +123,7 @@ const AddNewInterview = () => {
               createdAt: moment().format("DD-MM-YYYY"),
             })
             .returning({ mockId: MockInterview.mockId });
-  
+
           if (response) {
             setOpenDialog(false);
             router.push(`/dashboard/interview/${response[0]?.mockId}`);
@@ -138,7 +140,7 @@ const AddNewInterview = () => {
       } else {
         toast("Failed to generate from Json Data");
       }
-  
+
       setLoading(false);
     } catch (aiError: any) {
       console.error("Error while generating from AI", aiError);
@@ -146,7 +148,6 @@ const AddNewInterview = () => {
       setLoading(false);
     }
   }
-  
 
   return (
     <div>

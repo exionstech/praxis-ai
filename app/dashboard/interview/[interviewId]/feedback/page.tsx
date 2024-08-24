@@ -30,7 +30,7 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
       .where(eq(UserAnswer.mockIdref, params.interviewId))
       .orderBy(UserAnswer.id);
     setFeedbackList(result);
-
+    
     console.log(result);
   };
 
