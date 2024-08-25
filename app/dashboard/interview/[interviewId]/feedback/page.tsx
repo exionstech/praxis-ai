@@ -73,13 +73,17 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
       setActiveQuestion(activeQuestion + 1);
     }
   };
-
+  
   const handlePrev = () => {
     if (activeQuestion > 0) {
       setActiveQuestion(activeQuestion - 1);
     }
   };
-
+  
+  const handleSubmit = () => {
+    
+  };
+  
   return (
     <div className="flex flex-col p-4">
       {feedbackList.length === 0 ? (
@@ -170,7 +174,7 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                       <div className="">
                         <div>
                           <h2 className="py-2 px-2 border rounded-lg bg-blue-400/40 text-sm border-blue-700">
-                            <span className="font-bold">Question: </span>
+                            <span className="font-bold">Question {activeQuestion + 1}{": "}</span>
                             {mcqList[activeQuestion].question}
                           </h2>
                           <div className="mt-2 space-y-4">
@@ -187,14 +191,19 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                             )}
                           </div>
                         </div>
-                       <div className="flex gap-2">
-                       <Button onClick={handlePrev} className="mt-5">
-                          Previous
-                        </Button>
-                        <Button onClick={handleNext} className="mt-5">
-                          Next
-                        </Button>
-                       </div>
+                        <div className="flex justify-between items-center">
+                          <div className="space-x-2">
+                            <Button onClick={handlePrev} className="mt-5">
+                              Previous
+                            </Button>
+                            <Button onClick={handleNext} className="mt-5">
+                              Next
+                            </Button>
+                          </div>
+                          <Button onClick={handleSubmit} className="mt-5">
+                            Submit
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   )}
