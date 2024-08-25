@@ -71,16 +71,12 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
   const handleNext = () => {
     if (activeQuestion < mcqList.length - 1) {
       setActiveQuestion(activeQuestion + 1);
-    } else {
-      setActiveQuestion(activeQuestion);
     }
   };
 
   const handlePrev = () => {
-    if (activeQuestion !== 0) {
+    if (activeQuestion > 0) {
       setActiveQuestion(activeQuestion - 1);
-    } else {
-      setActiveQuestion(0);
     }
   };
 
@@ -172,11 +168,9 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                   {showMcqs && mcqList.length > 0 && (
                     <div className="mt-5">
                       <div className="">
-                        <div key={index}>
+                        <div>
                           <h2 className="py-2 px-2 border rounded-lg bg-blue-400/40 text-sm border-blue-700">
-                            <span className="font-bold">
-                              Question: {index + 1}{" "}
-                            </span>
+                            <span className="font-bold">Question: </span>
                             {mcqList[activeQuestion].question}
                           </h2>
                           <div className="mt-2 space-y-4">
@@ -187,18 +181,20 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                                   className="flex items-center gap-5 list-none"
                                 >
                                   <Input type="checkbox" className="w-6 h-6" />
-                                  <span>{option.text}</span>
+                                  <span>{option.option}</span>
                                 </li>
                               )
                             )}
                           </div>
                         </div>
-                        <Button onClick={handlePrev} className="mt-5">
+                       <div className="flex gap-2">
+                       <Button onClick={handlePrev} className="mt-5">
                           Previous
                         </Button>
                         <Button onClick={handleNext} className="mt-5">
                           Next
                         </Button>
+                       </div>
                       </div>
                     </div>
                   )}
