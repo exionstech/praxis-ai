@@ -53,7 +53,7 @@ const InterviewQuestion = ({ params }: { params: { interviewId: string } }) => {
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        event.preventDefault(); // Prevent the default action of the ESC key
+        event.preventDefault();
         toast("ESC key is disabled on this page", {
           action: {
             label: "Okay",
