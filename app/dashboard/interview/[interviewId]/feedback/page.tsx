@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "sonner";
 
 interface McqSaveType {
   question: string;
@@ -93,21 +94,16 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
     updatedAnswers[activeQuestion] = {
       question: mcqList[activeQuestion].question,
       isCorrect:
-        mcqList[activeQuestion].correctAnswer === mcqAnswer[activeQuestion]?.correctAnswer,
+        mcqList[activeQuestion].correctAnswer ===
+        mcqAnswer[activeQuestion]?.correctAnswer,
       correctAnswer: mcqList[activeQuestion].correctAnswer,
     };
     setMcqAnswer(updatedAnswers);
     console.log(updatedAnswers);
+    
+    toast.success("Answer saved");
   };
-
-  const handleSubmit = async () => {
-    try {
-alert("Submitted")
-    } catch (error) {
-      console.error("Error saving data:", error);
-    }
-  };
-
+  
   return (
     <div className="flex flex-col p-4">
       {feedbackList.length === 0 ? (
@@ -127,8 +123,12 @@ alert("Submitted")
         </div>
       ) : (
         <div>
-          <h2 className="text-3xl text-emerald-700 font-bold">Congratulations!</h2>
-          <p className="text-xl font-semibold">Here is your interview feedback</p>
+          <h2 className="text-3xl text-emerald-700 font-bold">
+            Congratulations!
+          </h2>
+          <p className="text-xl font-semibold">
+            Here is your interview feedback
+          </p>
           <p className="text-sm text-muted-foreground">
             Find below interview questions with the correct answer, your answer,
             and feedback for improvement.
@@ -206,16 +206,23 @@ alert("Submitted")
                               const updatedAnswers = [...mcqAnswer];
                               updatedAnswers[activeQuestion] = {
                                 question: mcqList[activeQuestion].question,
-                                isCorrect: value === mcqList[activeQuestion].correctAnswer,
+                                isCorrect:
+                                  value ===
+                                  mcqList[activeQuestion].correctAnswer,
                                 correctAnswer: value,
                               };
                               setMcqAnswer(updatedAnswers);
                             }}
-                            value={mcqAnswer[activeQuestion]?.correctAnswer || ""}
+                            value={
+                              mcqAnswer[activeQuestion]?.correctAnswer || ""
+                            }
                           >
                             {mcqList[activeQuestion].options.map(
                               (option: any, index: any) => (
-                                <div key={index} className="flex items-center space-x-2">
+                                <div
+                                  key={index}
+                                  className="flex items-center space-x-2"
+                                >
                                   <RadioGroupItem
                                     value={option.option}
                                     id={`option-${index}`}
@@ -237,24 +244,15 @@ alert("Submitted")
                               Next
                             </Button>
                           </div>
-                          {activeQuestion === mcqList.length - 1 ? (
-                            <Button
-                              onClick={() => handleSave()}
-                              className="mt-5"
-                            >
-                              Submit
-                            </Button>
-                          ) : (
-                            <Button
-                              onClick={() => {
-                                handleSave();
-                                handleSubmit();
-                              }}
-                              className="mt-5"
-                            >
-                              Submit
-                            </Button>
-                          )}
+
+                          <Button
+                            onClick={() => {
+                              handleSave();
+                            }}
+                            className="mt-5"
+                          >
+                            Submit
+                          </Button>
                         </div>
                       </div>
                     </div>
