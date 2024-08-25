@@ -14,12 +14,15 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
   const [feedbackList, setFeedbackList] = useState<any[]>([]);
   const [mcqList, setMcqList] = useState<any[]>([]);
   const [showMcqs, setShowMcqs] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [activeQuestion, setActiveQuestion] = useState<number>(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -65,6 +68,22 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
     setShowMcqs(!showMcqs);
   };
 
+  const handleNext = () => {
+    if (activeQuestion < mcqList.length - 1) {
+      setActiveQuestion(activeQuestion + 1);
+    } else {
+      setActiveQuestion(activeQuestion);
+    }
+  };
+
+  const handlePrev = () => {
+    if (activeQuestion !== 0) {
+      setActiveQuestion(activeQuestion - 1);
+    } else {
+      setActiveQuestion(0);
+    }
+  };
+
   return (
     <div className="flex flex-col p-4">
       {feedbackList.length === 0 ? (
@@ -102,7 +121,6 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
           <Collapsible key={index} className="py-[2px]">
             <CollapsibleTrigger className="p-2 bg-gray-500/20 rounded-lg my-2 text-left flex items-center justify-between w-full">
               <p className="font-bold text-rose-600">
-                Question:{" "}
                 <span className="text-md text-black font-semibold">
                   {item?.question}
                 </span>
@@ -144,32 +162,52 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                   {item?.feedback}
                 </h2>
               </div>
-              <div className="w-full flex items-center justify-center">
-                <Button className="mt-2" onClick={handleShowMcqs}>
-                  Suggest Some MCQ
-                </Button>
-              </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="mt-2" onClick={handleShowMcqs}>
+                    Suggest Some MCQ
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="flex flex-col justify-start items-start space-y-2">
+                  {showMcqs && mcqList.length > 0 && (
+                    <div className="mt-5">
+                      <div className="">
+                        <div key={index}>
+                          <h2 className="py-2 px-2 border rounded-lg bg-blue-400/40 text-sm border-blue-700">
+                            <span className="font-bold">
+                              Question: {index + 1}{" "}
+                            </span>
+                            {mcqList[activeQuestion].question}
+                          </h2>
+                          <div className="mt-2 space-y-4">
+                            {mcqList[activeQuestion].options.map(
+                              (option: any, index: any) => (
+                                <li
+                                  key={index}
+                                  className="flex items-center gap-5 list-none"
+                                >
+                                  <Input type="checkbox" className="w-6 h-6" />
+                                  <span>{option.text}</span>
+                                </li>
+                              )
+                            )}
+                          </div>
+                        </div>
+                        <Button onClick={handlePrev} className="mt-5">
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} className="mt-5">
+                          Next
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </DialogContent>
+              </Dialog>
             </CollapsibleContent>
           </Collapsible>
         ))}
       </ScrollArea>
-
-      {showMcqs && mcqList.length > 0 && (
-        <div className="mt-4">
-          <h2 className="text-xl font-semibold mb-2">Suggested MCQs:</h2>
-          <div className="flex flex-col gap-2">
-            {mcqList.map((mcq, index) => (
-              <h2
-                key={index}
-                className="py-2 px-2 border rounded-lg bg-blue-400/40 text-sm border-blue-700"
-              >
-                <span className="font-bold">Question: </span>
-                {mcq.question}
-              </h2>
-            ))}
-          </div>
-        </div>
-      )}
 
       {feedbackList.length > 0 && (
         <div className="w-full flex justify-end mt-2">
