@@ -15,7 +15,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface McqSaveType {
   question: string;
@@ -87,20 +88,24 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
     }
   };
 
-  const handleSubmit = () => {
-    setShowMcqs(false);
+  const handleSave = () => {
+    const updatedAnswers = [...mcqAnswer];
+    updatedAnswers[activeQuestion] = {
+      question: mcqList[activeQuestion].question,
+      isCorrect:
+        mcqList[activeQuestion].correctAnswer === mcqAnswer[activeQuestion]?.correctAnswer,
+      correctAnswer: mcqList[activeQuestion].correctAnswer,
+    };
+    setMcqAnswer(updatedAnswers);
+    console.log(updatedAnswers);
   };
 
-  const handleSave = () => {
-    setMcqAnswer([
-      ...mcqAnswer,
-      {
-        question: mcqList[activeQuestion].question,
-        isCorrect: true,
-        correctAnswer: mcqList[activeQuestion].correctAnswer,
-      },
-    ]);
-    console.log(mcqAnswer);
+  const handleSubmit = async () => {
+    try {
+alert("Submitted")
+    } catch (error) {
+      console.error("Error saving data:", error);
+    }
   };
 
   return (
@@ -122,12 +127,8 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
         </div>
       ) : (
         <div>
-          <h2 className="text-3xl text-emerald-700 font-bold">
-            Congratulations!
-          </h2>
-          <p className="text-xl font-semibold">
-            Here is your interview feedback
-          </p>
+          <h2 className="text-3xl text-emerald-700 font-bold">Congratulations!</h2>
+          <p className="text-xl font-semibold">Here is your interview feedback</p>
           <p className="text-sm text-muted-foreground">
             Find below interview questions with the correct answer, your answer,
             and feedback for improvement.
@@ -199,19 +200,33 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                             </span>
                             {mcqList[activeQuestion].question}
                           </h2>
-                          <div className="mt-2 space-y-4">
+                          <RadioGroup
+                            className="mt-2 space-y-4"
+                            onValueChange={(value) => {
+                              const updatedAnswers = [...mcqAnswer];
+                              updatedAnswers[activeQuestion] = {
+                                question: mcqList[activeQuestion].question,
+                                isCorrect: value === mcqList[activeQuestion].correctAnswer,
+                                correctAnswer: value,
+                              };
+                              setMcqAnswer(updatedAnswers);
+                            }}
+                            value={mcqAnswer[activeQuestion]?.correctAnswer || ""}
+                          >
                             {mcqList[activeQuestion].options.map(
                               (option: any, index: any) => (
-                                <li
-                                  key={index}
-                                  className="flex items-center gap-5 list-none"
-                                >
-                                  <Input type="checkbox" className="w-5 h-5 shrink-0" />
-                                  <span>{option.option}</span>
-                                </li>
+                                <div key={index} className="flex items-center space-x-2">
+                                  <RadioGroupItem
+                                    value={option.option}
+                                    id={`option-${index}`}
+                                  />
+                                  <Label htmlFor={`option-${index}`}>
+                                    {option.option}
+                                  </Label>
+                                </div>
                               )
                             )}
-                          </div>
+                          </RadioGroup>
                         </div>
                         <div className="flex justify-between items-center">
                           <div className="space-x-2">
@@ -250,20 +265,6 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
           </Collapsible>
         ))}
       </ScrollArea>
-
-      {feedbackList.length > 0 && (
-        <div className="w-full flex justify-end mt-2">
-          <Button
-            onClick={handleRedirectDashboard}
-            isLoading={loading}
-            loadingText="Redirecting"
-            type="button"
-            variant="shine"
-          >
-            Back to home
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
