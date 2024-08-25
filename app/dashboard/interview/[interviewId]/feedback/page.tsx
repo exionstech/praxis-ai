@@ -17,12 +17,19 @@ import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
+interface McqSaveType {
+  question: string;
+  isCorrect: boolean;
+  correctAnswer: string;
+}
+
 const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
   const [feedbackList, setFeedbackList] = useState<any[]>([]);
   const [mcqList, setMcqList] = useState<any[]>([]);
   const [showMcqs, setShowMcqs] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeQuestion, setActiveQuestion] = useState<number>(0);
+  const [mcqAnswer, setMcqAnswer] = useState<McqSaveType[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -73,17 +80,29 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
       setActiveQuestion(activeQuestion + 1);
     }
   };
-  
+
   const handlePrev = () => {
     if (activeQuestion > 0) {
       setActiveQuestion(activeQuestion - 1);
     }
   };
-  
+
   const handleSubmit = () => {
-    
+    setShowMcqs(false);
   };
-  
+
+  const handleSave = () => {
+    setMcqAnswer([
+      ...mcqAnswer,
+      {
+        question: mcqList[activeQuestion].question,
+        isCorrect: true,
+        correctAnswer: mcqList[activeQuestion].correctAnswer,
+      },
+    ]);
+    console.log(mcqAnswer);
+  };
+
   return (
     <div className="flex flex-col p-4">
       {feedbackList.length === 0 ? (
@@ -174,7 +193,10 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                       <div className="">
                         <div>
                           <h2 className="py-2 px-2 border rounded-lg bg-blue-400/40 text-sm border-blue-700">
-                            <span className="font-bold">Question {activeQuestion + 1}{": "}</span>
+                            <span className="font-bold">
+                              Question {activeQuestion + 1}
+                              {": "}
+                            </span>
                             {mcqList[activeQuestion].question}
                           </h2>
                           <div className="mt-2 space-y-4">
@@ -184,7 +206,7 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                                   key={index}
                                   className="flex items-center gap-5 list-none"
                                 >
-                                  <Input type="checkbox" className="w-6 h-6" />
+                                  <Input type="radio" className="w-6 h-6" />
                                   <span>{option.option}</span>
                                 </li>
                               )
@@ -200,9 +222,24 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                               Next
                             </Button>
                           </div>
-                          <Button onClick={handleSubmit} className="mt-5">
-                            Submit
-                          </Button>
+                          {activeQuestion === mcqList.length - 1 ? (
+                            <Button
+                              onClick={() => handleSave()}
+                              className="mt-5"
+                            >
+                              Submit
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() => {
+                                handleSave();
+                                handleSubmit();
+                              }}
+                              className="mt-5"
+                            >
+                              Submit
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </div>
