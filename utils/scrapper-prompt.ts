@@ -72,6 +72,6 @@ export const ScrapperPrompt = ({
     - Tell me about a time when you stepped up as a leader even though you werent officially in a leadership role.
     - Whats the most valuable feedback youve ever received?
     
-    Format the output to return only an array in a JSON Format where question must be stored in question key and answer must be stored in answer key which stores questions from above set of questions according to ${jobDescription} and answers for ${QUESTION_COUNT} times in a random order.
+    Format the output to return only an array in a JSON Format where question must be stored in question key and answer must be stored in answer key which stores questions from above set of questions according to ${jobDescription} and ${jobPosition} and answers for ${QUESTION_COUNT} times in a random order.
   `;
 };
