@@ -73,5 +73,33 @@ export const ScrapperPrompt = ({
     - Whats the most valuable feedback youve ever received?
     
     Format the output to return only an array in a JSON Format where question must be stored in question key and answer must be stored in answer key which stores questions from above set of questions according to ${jobDescription} and ${jobPosition} from the above questions and also other highly possible ones from the internet in a random order. Total questions must be ${QUESTION_COUNT} in the output.
-  `;
+
+    Convert it to json in this format:
+    
+      {
+        [
+          {
+            question: "",
+            answer: ""
+          },
+          {
+            question: "",
+            answer: ""
+          },
+          {
+            question: "",
+            answer: ""
+          },
+          {
+            question: "",
+            answer: ""
+          },
+          {
+            question: "",
+            answer: ""
+          }
+        ]
+      }
+
+    `;
 };
