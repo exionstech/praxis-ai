@@ -26,47 +26,7 @@ export const mcqPromptFormat = ({
             {option: "", correct: ""}
           ],
         "correctAnswer": ""
-      },
-      {
-        "question": "",
-        "options": [
-            {option: "", correct: ""},
-            {option: "", correct: ""}, 
-            {option: "", correct: ""}, 
-            {option: "", correct: ""}
-          ],
-        "correctAnswer": ""
-      },
-      {
-        "question": "",
-        "options": [
-            {option: "", correct: ""},
-            {option: "", correct: ""}, 
-            {option: "", correct: ""}, 
-            {option: "", correct: ""}
-          ],
-        "correctAnswer": ""
-      },
-      {
-        "question": "",
-        "options": [
-            {option: "", correct: ""},
-            {option: "", correct: ""}, 
-            {option: "", correct: ""}, 
-            {option: "", correct: ""}
-          ],
-        "correctAnswer": ""
-      },
-      {
-        "question": "",
-        "options": [
-            {option: "", correct: ""},
-            {option: "", correct: ""}, 
-            {option: "", correct: ""}, 
-            {option: "", correct: ""}
-          ],
-        "correctAnswer": ""
-      },
+      }
     ]
   
   for which have an object key mcqs for the above question with mcqs field and options field with correct answer field but don't give any sort extra alphanumeric letters other than alphabets and object {} symbols and store questions in question and options in options key of the object. Just give the mcqs and store the mcqs in json format with mcqs as the key.`;
