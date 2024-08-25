@@ -76,7 +76,6 @@ export const ScrapperPrompt = ({
 
     Convert it to json in this format:
     
-      {
         [
           {
             question: "",
@@ -99,7 +98,6 @@ export const ScrapperPrompt = ({
             answer: ""
           }
         ]
-      }
 
     `;
 };
