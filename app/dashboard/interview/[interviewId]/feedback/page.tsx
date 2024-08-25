@@ -184,7 +184,7 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                                   key={index}
                                   className="flex items-center gap-5 list-none"
                                 >
-                                  <Input type="checkbox" className="w-6 h-6" />
+                                  <Input type="checkbox" className="w-5 h-5 shrink-0" />
                                   <span>{option.option}</span>
                                 </li>
                               )
