@@ -41,6 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ScrapperPrompt } from "@/utils/scrapper-prompt";
 
 const formSchema = z.object({
   jobPosition: z.string().min(1, {
@@ -82,7 +83,8 @@ const AddNewInterview = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    const InputPrompt = InputPromptsFormat(values);
+    // const InputPrompt = InputPromptsFormat(values);
+    const InputPrompt = ScrapperPrompt(values);
 
     try {
       const result = await chatSession.sendMessage(InputPrompt);
@@ -91,7 +93,7 @@ const AddNewInterview = () => {
         .replace("```json", "")
         .replace("```", "")
         .trim();
-      
+
       console.log(result);
 
       console.log("MockJsonResponse", MockJsonResponse);
