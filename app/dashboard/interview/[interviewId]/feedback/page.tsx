@@ -103,7 +103,11 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
     
     toast.success("Answer saved");
   };
-  
+
+  const handleSubmit = () => {
+    toast.success("Submitted successfully");
+  };
+
   return (
     <div className="flex flex-col p-4">
       {feedbackList.length === 0 ? (
@@ -244,15 +248,26 @@ const FeedBackPage = ({ params }: { params: { interviewId: string } }) => {
                               Next
                             </Button>
                           </div>
-
-                          <Button
-                            onClick={() => {
-                              handleSave();
-                            }}
-                            className="mt-5"
-                          >
-                            Submit
-                          </Button>
+                          <div className="space-x-2">
+                            <Button
+                              onClick={() => {
+                                handleSave();
+                              }}
+                              className="mt-5"
+                            >
+                              Save
+                            </Button>
+                            {activeQuestion === mcqList.length - 1 && (
+                              <Button
+                                onClick={() => {
+                                  handleSubmit();
+                                }}
+                                className="mt-5"
+                              >
+                                Submit
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
