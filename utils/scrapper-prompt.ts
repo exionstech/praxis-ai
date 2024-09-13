@@ -20,36 +20,9 @@ export const ScrapperPrompt = ({
   jobPosition,
   company,
 }: InputPromptsProps) => {
-  return `The questions must be asked from these according to the ${jobPosition} with primary skills in ${jobDescription}, and ${jobExperience} years of experience and only ${QUESTION_COUNT} questions will be given.
-   
-    The output json format will be:
-    
-    {
-      "question": "",
-      "options": [
-        {
-          "option": "",
-          "correct": 
-        },
-        {
-          "option": "",
-          "correct": 
-        },
-        {
-          "option": "",
-          "correct": 
-        },
-        {
-          "option": "",
-          "correct": 
-        }
-      ],
-      "correctAnswer": ""
-    }
-  `;
-};
+  return `The questions must be asked from these according to the ${jobPosition} with primary skills in ${jobDescription}, and ${jobExperience} years of experience.
 
-// The questions for ${company} when it is google are :
+   The questions for ${company} when it is google are :
 
 // - Why do you want to work for Google?
 // - Tell me what you know about Googles history.

@@ -253,7 +253,7 @@ export const QuestionsSection = ({
                 <span>Question </span>#{index + 1}
               </h2>
             ))}
-          <div
+          {/* <div
             className="absolute top-12 right-5 flex justify-end !z-10"
             onClick={() =>
               handleSpeechButton(
@@ -266,7 +266,7 @@ export const QuestionsSection = ({
             ) : (
               <AudioLines className="size-9 rounded-lg cursor-pointer" />
             )}
-          </div>
+          </div> */}
         </div>
         <ScrollArea className="bg-gray-500/20 rounded-lg px-4 py-3 font-semibold text-sm md:text-[1rem] flex flex-col gap-3 h-[22vh] overflow-y-auto">
           <h2>{mockInterviewQuestion[activeQuestionIndex]?.question}</h2>
