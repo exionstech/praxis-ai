@@ -25,26 +25,29 @@ export const ScrapperPrompt = ({
     The output json format will be:
     
     {
-      "question": "",
-      "options": [
-        {
-          "option": "",
-          "correct": 
-        },
-        {
-          "option": "",
-          "correct": 
-        },
-        {
-          "option": "",
-          "correct": 
-        },
-        {
-          "option": "",
-          "correct": 
-        }
-      ],
-      "correctAnswer": ""
-    }
+        [
+          {
+            question: "",
+            answer: ""
+          },
+          {
+            question: "",
+            answer: ""
+          },
+          {
+            question: "",
+            answer: ""
+          },
+          {
+            question: "",
+            answer: ""
+          },
+          {
+            question: "",
+            answer: ""
+          }
+        ]
+      }
+  
   `;
 };
