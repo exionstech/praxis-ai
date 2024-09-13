@@ -25,6 +25,31 @@ const InterViewStartPage = ({
     GetInterviewDetails();
   }, []);
 
+  const handleEsc = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      toast("Interview stopped", {
+        action: {
+          label: "Okay",
+          onClick: () => toast.dismiss(),
+        },
+      });
+      router.push(`/dashboard`);
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    }
+  };
+
+  useEffect(() => {
+
+    document.addEventListener("keydown", handleEsc);
+
+    // Clean up the event listener when the component is unmounted or the interview is stopped
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [handleEsc]);
+
   /**
    * used to get mock interview details based on interview id
    */
@@ -57,28 +82,6 @@ const InterViewStartPage = ({
         });
       }, 800);
     }
-
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        toast("Interview stopped", {
-          action: {
-            label: "Okay",
-            onClick: () => toast.dismiss(),
-          },
-        });
-        router.push(`/dashboard`);
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
-        }
-      }
-    };
-
-    document.addEventListener("keydown", handleEsc);
-
-    // Clean up the event listener when the component is unmounted or the interview is stopped
-    return () => {
-      document.removeEventListener("keydown", handleEsc);
-    };
   };
 
   const handleRedirectDashboard = () => {

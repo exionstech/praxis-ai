@@ -31,7 +31,7 @@ const InterviewQuestion = ({ params }: { params: { interviewId: string } }) => {
 
     const jsonMockResp = JSON.parse(result[0].jsonMockResponse);
     console.log(jsonMockResp);
-    
+
     setMockInterviewQuestion(jsonMockResp);
     setInterviewData(result[0]);
   };
@@ -50,30 +50,32 @@ const InterviewQuestion = ({ params }: { params: { interviewId: string } }) => {
     }, 1700);
   };
 
+  const handleFullscreenChange = () => {
+    if (!document.fullscreenElement) {
+      router.push(`/dashboard`);
+      toast("Escaped from fullscreen mode", {
+        action: {
+          label: "Okay",
+          onClick: () => toast.dismiss(),
+        },
+      });
+    }
+  };
+  
   useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        toast("ESC key is disabled on this page", {
-          action: {
-            label: "Okay",
-            onClick: () => toast.dismiss(),
-          },
-        });
-      }
-    };
-
     if (
       window.location.pathname ===
       `/dashboard/interview/${params.interviewId}/start`
     ) {
-      document.addEventListener("keydown", handleEsc);
+      // document.addEventListener("keydown", handleEsc);
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
     }
 
     return () => {
-      document.removeEventListener("keydown", handleEsc);
+      // document.removeEventListener("keydown", handleEsc);
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [params.interviewId]);
+  }, [handleFullscreenChange]);
 
   return (
     mockInterviewQuestion && (
