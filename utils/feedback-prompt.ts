@@ -15,7 +15,7 @@ export const mcqPromptFormat = ({
   userAnswer,
 }: feedbackPromptProps) => {
   return `Question : ${question} , User Answer: ${userAnswer}, Depends on Question and user answer for given interview question please store 5 mcqs which are different and must depend upon the rating of the userAnswer for the question and choose the difficulty according to the rating within an array in a json format like: 
-  
+  {
     [
       {
         "question": "",
@@ -28,6 +28,7 @@ export const mcqPromptFormat = ({
         "correctAnswer": ""
       }
     ]
+  }
   
   for which have an object key mcqs for the above question with mcqs field and options field with correct answer field but don't give any sort extra alphanumeric letters other than alphabets and object {} symbols and store questions in question and options in options key of the object. Just give the mcqs and store the mcqs in json format with mcqs as the key.`;
 };

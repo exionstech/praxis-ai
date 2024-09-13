@@ -187,42 +187,44 @@ export const QuestionsSection = ({
         .replace(/```/g, "")
         .trim();
 
+        console.log(mockJsonResponse);
+
       // Parse the cleaned-up response into JSON
-      const jsonFeedbackResponse = JSON.parse(mockJsonResponse);
-      console.log(jsonFeedbackResponse?.mcqs);
+      // const jsonFeedbackResponse = JSON.parse(mockJsonResponse);
+      // console.log(jsonFeedbackResponse);
+      
+      // if (interviewData?.mockId && user?.primaryEmailAddress?.emailAddress) {
+      //   const resp = await db.insert(McqDetails).values({
+      //     mockIdref: interviewData.mockId,
+      //     mcqs: JSON.stringify(jsonFeedbackResponse?.mcqs), // Save MCQs as a JSON string
+      //     createdAt: moment().format("YYYY-MM-DD"),
+      //   });
 
-      if (interviewData?.mockId && user?.primaryEmailAddress?.emailAddress) {
-        const resp = await db.insert(McqDetails).values({
-          mockIdref: interviewData.mockId,
-          mcqs: JSON.stringify(jsonFeedbackResponse?.mcqs), // Save MCQs as a JSON string
-          createdAt: moment().format("YYYY-MM-DD"),
-        });
-
-        if (resp) {
-          toast("MCQ recorded successfully", {
-            action: {
-              label: "Okay",
-              onClick: () => toast.dismiss(),
-            },
-          });
-          setResults([]);
-          clearUserData();
-        } else {
-          toast("Something went wrong while saving", {
-            action: {
-              label: "Okay",
-              onClick: () => toast.dismiss(),
-            },
-          });
-        }
-      } else {
-        toast("Error while fetching user data", {
-          action: {
-            label: "Okay",
-            onClick: () => toast.dismiss(),
-          },
-        });
-      }
+      //   if (resp) {
+      //     toast("MCQ recorded successfully", {
+      //       action: {
+      //         label: "Okay",
+      //         onClick: () => toast.dismiss(),
+      //       },
+      //     });
+      //     setResults([]);
+      //     clearUserData();
+      //   } else {
+      //     toast("Something went wrong while saving", {
+      //       action: {
+      //         label: "Okay",
+      //         onClick: () => toast.dismiss(),
+      //       },
+      //     });
+      //   }
+      // } else {
+      //   toast("Error while fetching user data", {
+      //     action: {
+      //       label: "Okay",
+      //       onClick: () => toast.dismiss(),
+      //     },
+      //   });
+      // }
     } catch (err) {
       toast("Something went wrong while saving", {
         action: {
