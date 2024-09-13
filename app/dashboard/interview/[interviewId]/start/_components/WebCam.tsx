@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Webcam from "react-webcam";
 
@@ -12,15 +11,10 @@ interface RecordAnsSectionProps {
 export const WebCam = ({ mockInterviewQuestion }: RecordAnsSectionProps) => {
   const [webcamEnabled, setWebcamEnabled] = useState(true);
 
-  const router = useRouter();
-
   const handleWebCamAccess = () => {
     setWebcamEnabled((prev) => !prev);
-    if(webcamEnabled){
-      router.push(`/dashboard`);
-    }
   };
-  
+
   return (
     mockInterviewQuestion && (
       <div className="flex flex-col justify-center items-center bg-gray-500/70 rounded-lg pt-2 px-5 gap-4 h-full">
